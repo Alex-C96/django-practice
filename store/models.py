@@ -11,8 +11,9 @@ class Collection(models.Model):
 
 class Product(models.Model):
     title = models.CharField(max_length=255)
+    slug = models.SlugField(default='-')
     description = models.TextField()
-    price = models.DecimalField(max_digits=6, decimal_places=2)
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
     inventory = models.IntegerField()
     last_update = models.DateTimeField(auto_now=True)
     collection = models.ForeignKey(Collection, on_delete=models.PROTECT)
@@ -35,6 +36,7 @@ class Customer(models.Model):
     birth_date = models.DateField(null=True)
     membership = models.CharField(max_length=1, choices=MEMBERSHIP_CHOICES, default=MEMBERSHIP_BRONZE)
 
+
 class Order(models.Model):
     PAYMENT_PENDING = 'P'
     PAYMENT_COMPLETE = 'C'
@@ -51,8 +53,9 @@ class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.PROTECT)
 
 class Address(models.Model):
-    street = models.CharField
-    city = models.CharField
+    street = models.CharField(max_length=255, default=None)
+    city = models.CharField(max_length=255, default=None)
+    zipcode = models.PositiveIntegerField(default=None)
     customer = models.ForeignKey(Customer, on_delete=models.CASCADE)
 
 class Cart(models.Model):
